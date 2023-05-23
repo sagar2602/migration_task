@@ -1,0 +1,5 @@
+name: 'RSS Migrate'
+type: module
+description: 'FEN Migrattion Tools to migrate resources from http://www.teachit.co.uk'
+core_version_requirement: ^9
+package: 'Custom'

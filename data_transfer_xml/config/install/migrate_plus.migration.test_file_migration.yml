@@ -1,0 +1,20 @@
+id: test_file_migration
+label: 'Import my RSS feed'
+status: true
+
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  urls: 'http://feeds.feedburner.com/ndtvnews-top-stories.xml'
+  data_parser_plugin: xml
+  item_selector: /rss/channel/item/'media:content["url"]'
+  fields:
+    - name: image_url
+      label: 'Image Url'
+      selector: url
+    - name: img_type
+      label: 'Photo type'
+      selector: type
+  ids:
+    image_url:
+      type: string

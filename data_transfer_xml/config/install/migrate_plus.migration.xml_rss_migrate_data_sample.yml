@@ -1,0 +1,78 @@
+id: xml_rss_migrate_data_sample
+label: 'Import my RSS feed'
+status: true
+migration_group: xml_rss_data_group_sample
+
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  urls: 'http://feeds.feedburner.com/ndtvnews-top-stories.xml'
+  data_parser_plugin: xml
+
+  item_selector: /rss/channel/item
+  fields:
+    -
+      name: guid
+      label: GUID
+      selector: guid
+    -
+      name: title
+      label: Title
+      selector: title
+    -
+      name: pub_date
+      label: 'Publication date'
+      selector: pubDate
+    -
+      name: link
+      label: 'Origin link'
+      selector: link
+    -
+      name: summary
+      label: Summary
+      selector: description
+    -
+      name: image
+      label: Image
+      selector: 'media:content["url"]'
+
+  ids:
+    guid:
+      type: string
+  constants:
+    destination_uri: 'public://'
+
+destination:
+  plugin: 'entity:node'
+
+process:
+  slug: some-text
+  title: title
+  field_link: link
+  field_guid: guid
+  body: summary
+  created:
+    plugin: format_date
+    from_format: 'D, d M Y H:i:s O'
+    to_format: 'U'
+    source: pub_date
+  changed:
+    plugin: format_date
+    from_format: 'D, d M Y H:i:s O'
+    to_format: 'U'
+    source: pub_date
+  status:
+    plugin: default_value
+    default_value: 1
+  type:
+    plugin: default_value
+    default_value: article
+  # field_storyimage:
+  #   - 
+  #     plugin: download
+  #     source:
+  #       - image
+  #       - constants/destination_uri
+  #     rename: true
+  #   - 
+  #     plugin: entity_generate
